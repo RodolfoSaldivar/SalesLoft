@@ -4,10 +4,9 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-	res.send({ working: 'fine' });
-});
+require('./routes/peopleRoutes')(app);
 
+// Configuration for heroku
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static('client/build'));
 	const path = require('path');
