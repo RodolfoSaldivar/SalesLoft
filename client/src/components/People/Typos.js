@@ -7,21 +7,28 @@ import NoContent from '../NoContent';
 import CallError from '../CallError';
 import * as peopleActions from '../../actions/peopleActions';
 
-class Frequency extends Component {
+class Typos extends Component {
 
 	async componentDidMount() {
 		if (!this.props.people.length)
 			await this.props.getPeople();
 
-		if (!this.props.frequencies.length)
-			this.props.setFrecuencies(this.props.people);
+		if (!this.props.tree)
+			await this.props.createTree(this.props.people);
+
+		if (!this.props.typos.length) {
+			this.props.viewTypos(
+				this.props.tree,
+				this.props.people
+			);
+		}
 	}
 
 	displayContent = () => {
 		if (this.props.error)
 			return <CallError error={ this.props.error } />;
 
-		if (this.props.frequencies.length)
+		if (this.props.typos.length)
 			return this.displayTable();
 		
 		return <NoContent />;
@@ -30,13 +37,13 @@ class Frequency extends Component {
 	displayTable = () => (
 		<div>
 			<h3>
-				Frequency
+				Possible Typos
 			</h3>
 			<Table hoverable={ true }>
 				<thead>
 					<tr>
-						<th>Character</th>
-						<th>Count</th>
+						<th>Source</th>
+						<th>Possible Duplicates</th>
 					</tr>
 				</thead>
 
@@ -48,10 +55,15 @@ class Frequency extends Component {
 	);
 
 	displayRows = () => (
-		this.props.frequencies.map((obj, index) => (
+		this.props.typos.map((typos, index) => (
 			<tr key={ index }>
-				<td>{ obj.letter }</td>
-				<td>{ obj.count }</td>
+				<td>{ typos[0] }</td>
+				<td>
+					{ typos.map((email, key) => {
+						if (key === 0) return;
+						return (<p key={key}>{ email }</p>)
+					}) }
+				</td>
 			</tr>
 		))
 	);
@@ -68,4 +80,4 @@ class Frequency extends Component {
 
 const mapStateToProps = ({ peopleReducer }) => peopleReducer;
 
-export default connect(mapStateToProps, peopleActions)(Frequency);
+export default connect(mapStateToProps, peopleActions)(Typos);

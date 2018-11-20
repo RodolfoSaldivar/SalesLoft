@@ -18,6 +18,16 @@ const Header = (props) =>
 					Frequency
 				</Link>
 			</li>
+			<li>
+				<Link to="/typos">
+					Typos
+				</Link>
+			</li>
+			<li>
+				<Link to="/typos_input">
+					From Input
+				</Link>
+			</li>
 		</Navbar>
 	</div>
 );

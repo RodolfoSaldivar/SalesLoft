@@ -1,6 +1,8 @@
 import axios from 'axios';
-import { START, SUCCESS, FAILED, FREQUENCY } from '../types/peopleTypes';
+import bktree from'bktree';
+import { START, SUCCESS, FAILED, FREQUENCY, TYPOS, TREE, INPUT_TYPOS, INPUT } from '../types/peopleTypes';
 
+// Connects to the server
 export const getPeople = () => async (dispatch) => {
 	dispatch({ type: START });
 
@@ -13,6 +15,8 @@ export const getPeople = () => async (dispatch) => {
 	}
 };
 
+
+// Set the frequencies of the letters
 export const setFrecuencies = (people) => (dispatch) => {
 	dispatch({ type: START });
 
@@ -52,4 +56,41 @@ export const setFrecuencies = (people) => (dispatch) => {
 	dispatch({ type: FREQUENCY, payload: arrayFreq });
 };
 
-	
+
+// Creates an array with all the mails
+export const createTree = (people) => (dispatch) => {
+	dispatch({ type: START });
+
+	const all_mails = people.map(({email}) => email);
+	var tree = new bktree(all_mails);
+
+	dispatch({ type: TREE, payload: tree });
+};
+
+
+// Creates an array of possible typos
+export const viewTypos = (tree, people) => (dispatch) => {
+	dispatch({ type: START });
+
+	let typos = [];
+	people.map(({email}) => {
+		// Get correctly spelled words at distance <= 3
+		const similars = tree.query(email, 3);
+		// Always 1, the email itself
+		if (similars.length > 1) typos.push(similars);
+	});
+
+	dispatch({ type: TYPOS, payload: typos });
+};
+
+
+// Creates an array of possible typos from one string
+export const validateTypos = (input, tree) => (dispatch) => {
+	dispatch({ type: START });
+
+	// Get correctly spelled words at distance <= 3
+	const similars = tree.query(input, 3);
+
+	dispatch({ type: INPUT, payload: input });
+	dispatch({ type: INPUT_TYPOS, payload: similars });
+};

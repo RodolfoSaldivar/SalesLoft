@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Table } from 'react-materialize';
 
 import Loading from '../Loading';
+import NoContent from '../NoContent';
 import CallError from '../CallError';
 import * as peopleActions from '../../actions/peopleActions';
 
@@ -13,11 +14,15 @@ class People extends Component {
 			this.props.getPeople();
 	}
 
-	displayContent = () => (
-		(this.props.error) ?
-			<CallError error={ this.props.error } /> :
-			this.displayTable()
-	);
+	displayContent = () => {
+		if (this.props.error)
+			return <CallError error={ this.props.error } />;
+
+		if (this.props.people.length)
+			return this.displayTable();
+		
+		return <NoContent />;
+	};
 
 	displayTable = () => (
 		<div>
