@@ -1,36 +1,22 @@
-import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import React, { Component } from 'react';
 import { Table, Preloader, Icon } from 'react-materialize';
-import * as peopleActions from '../actions/peopleActions';
+
+import Loading from '../Loading';
+import CallError from '../CallError';
+import * as peopleActions from '../../actions/peopleActions';
 
 class People extends Component {
 
 	componentDidMount() {
-		if (!this.props.loaded)
+		if (!this.props.people.length)
 			this.props.getPeople();
 	}
 
-	displayPreloader = () => (
-		<div className="center">
-			<br/><br/><br/>
-			<Preloader/>
-		</div>
-	);
-
 	displayContent = () => (
 		(this.props.error) ?
-			this.displayError() :
+			<CallError error={ this.props.error } /> :
 			this.displayTable()
-	);
-
-	displayError = () => (
-		<div className="center">
-			<Icon className="red-text" large>error</Icon>
-			<h2>There was an error</h2>
-			<h3>Please try in a few minutes</h3>
-			<h4 className="red-text">ERROR:</h4>
-			{ this.props.error }
-		</div>
 	);
 
 	displayTable = () => (
@@ -67,7 +53,8 @@ class People extends Component {
 	render() {
 		return (
 			<div>
-				{ (this.props.loading) ? this.displayPreloader() : this.displayContent() }
+				{ (this.props.loading) ? <Loading /> : this.displayContent() }
+				<br/><br/><br/>
 			</div>
 		);
 	}

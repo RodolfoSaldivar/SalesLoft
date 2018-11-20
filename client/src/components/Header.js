@@ -9,13 +9,13 @@ const Header = (props) =>
 			<li>
 				<Link to="/">
 					<div>
-						Level 1
+						People
 					</div>
 				</Link>
 			</li>
 			<li>
-				<Link to="/level2">
-					Level 2
+				<Link to="/frequency">
+					Frequency
 				</Link>
 			</li>
 		</Navbar>
