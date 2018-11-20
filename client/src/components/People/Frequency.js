@@ -1,7 +1,6 @@
-import _ from 'lodash';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { Table, Preloader, Icon } from 'react-materialize';
+import { Table } from 'react-materialize';
 
 import Loading from '../Loading';
 import CallError from '../CallError';
@@ -13,7 +12,7 @@ class Frequency extends Component {
 		if (!this.props.people.length)
 			await this.props.getPeople();
 
-		if (_.isEmpty(this.props.frequencies))
+		if (!this.props.frequencies.length)
 			this.props.setFrecuencies(this.props.people);
 	}
 
@@ -44,10 +43,10 @@ class Frequency extends Component {
 	);
 
 	displayRows = () => (
-		Object.keys(this.props.frequencies).map((char) => (
-			<tr key={ char }>
-				<td>{ char }</td>
-				<td>{ this.props.frequencies[char] }</td>
+		this.props.frequencies.map((obj, index) => (
+			<tr key={ index }>
+				<td>{ obj.letter }</td>
+				<td>{ obj.count }</td>
 			</tr>
 		))
 	);

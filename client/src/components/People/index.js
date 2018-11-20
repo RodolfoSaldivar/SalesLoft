@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { Table, Preloader, Icon } from 'react-materialize';
+import { Table } from 'react-materialize';
 
 import Loading from '../Loading';
 import CallError from '../CallError';

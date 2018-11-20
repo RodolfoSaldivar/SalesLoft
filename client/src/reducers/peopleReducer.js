@@ -1,8 +1,8 @@
-import { START, SUCCESS, FAILED } from '../types/peopleTypes';
+import { START, SUCCESS, FAILED, FREQUENCY } from '../types/peopleTypes';
 
 const INITIAL_STATE = {
 	people: [],
-	frequencies: {},
+	frequencies: [],
 	loading: false,
 	error: ''
 };
@@ -29,8 +29,9 @@ export default (state = INITIAL_STATE, action) => {
 			people: action.payload
 		};
 
-		case 'people_frequencies': return {
+		case FREQUENCY: return {
 			...state,
+			loading: false,
 			frequencies: action.payload
 		};
 
